@@ -25,20 +25,61 @@ const LinksQuery = gql`
 }
 `;
 
+const DoctorsQuery = gql`
+{
+  doctors{
+    id
+    docname
+    docemail
+  }
+}
+`;
+
+const RelationsQuery = gql`
+{
+  relations{
+    id
+    docemail
+    email
+  }
+}
+`;
+
+
+
 class App extends React.Component{
+  createUser = async (name,email)=>{
+    await this.props.createUser({
+      variables:{
+        name,
+        email
+
+      }
+    })
+
+  }
 
 
   render(){
-    // const {data: {loading,users}} = this.props;
-    console.log(this.props);
-    // console.log(this.props.userQuery);
+    if(this.props.doctorQuery.loading){
+      return null
+    }
     return(
-      <h2 className="App">Hello</h2>
+      <div>
+        {this.props.userQuery.users.map(user => (
+          <p key={user.id}>{user.name}</p>
+        ))}
+      </div>
     )
+
   }
 }
 
-export default compose(graphql(UsersQuery,{name:"userQuery"}),
-graphql(LinksQuery))(App);
+export default compose(
+graphql(RelationsQuery,{name:"relationQuery"}),
+graphql(UsersQuery,{name:"userQuery"}),
+graphql(DoctorsQuery,{name:"doctorQuery"}),
+graphql(LinksQuery, {name:"linkQuery"}))(App);
+
 
 
