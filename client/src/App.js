@@ -1,26 +1,44 @@
 import React from 'react';
-import logo from './logo.svg';
+import {graphql} from 'react-apollo';
+import gql from 'graphql-tag';
+import * as compose from 'lodash.flowright';
 import './App.css';
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+const UsersQuery = gql`
+{
+  users{
+    id
+    name
+    email
+  }
+}
+`;
+
+const LinksQuery = gql`
+{
+  links{
+    id
+    email
+    hash
+    
+  }
+}
+`;
+
+class App extends React.Component{
+
+
+  render(){
+    // const {data: {loading,users}} = this.props;
+    console.log(this.props);
+    // console.log(this.props.userQuery);
+    return(
+      <h2 className="App">Hello</h2>
+    )
+  }
 }
 
-export default App;
+export default compose(graphql(UsersQuery,{name:"userQuery"}),
+graphql(LinksQuery))(App);
+
+
